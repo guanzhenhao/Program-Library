@@ -1,4 +1,4 @@
-PROC S_OPERATION_RAND_SW DISPLOF
+PROC S_OPERATION_RAND DISPLOF
 ;;**********程序功能**********
 ;;外螺纹二次对刀程序
 ;;***************************

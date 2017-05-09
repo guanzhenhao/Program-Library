@@ -1,4 +1,4 @@
-PROC S_OPERATION_AUTO_SW DISPLOF
+PROC S_OPERATION_AUTO DISPLOF
 ;;**********程序功能**********
 ;;外螺纹自动对刀程序:
 ;;包含测量头和接近开关类型

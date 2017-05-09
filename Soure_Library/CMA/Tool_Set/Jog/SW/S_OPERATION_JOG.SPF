@@ -1,4 +1,4 @@
-PROC S_OPERATION_JOG_SW DISPLOF
+PROC S_OPERATION_JOG DISPLOF
 ;;**********程序功能**********
 ;;外螺纹手动对刀
 ;;***************************
