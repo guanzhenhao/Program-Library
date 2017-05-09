@@ -1,0 +1,64 @@
+PROC JIAJU_GRIND DISPLON
+;;**********程序功能**********
+;;夹具磨削:
+;;使用前需手动测量初始参数,注意坐标的左右方向
+;;***************************
+
+DRESSER[60]=0;;砂轮在夹具左侧Z坐标
+DRESSER[61]=0;;砂轮在夹具右侧Z坐标
+DRESSER[62]=0;;砂轮接触夹具X轴坐标
+DRESSER[69]=0;;进刀量
+INI[68]=0;;差补螺距
+
+;;***************************
+
+DRFOF
+DRESSER[68]=0
+S_RESET_ANGLE;升角复位
+G90 G01 Z=INI[28] F=INI[56];内螺纹时台面起始位置
+G90 G01 X=INI[10] F=INI[55];砂轮中心与头架中心重合
+IF (INI[36]==0) OR (INI[36]==2);砂轮类型选择
+    R299=15000
+    G4 F0.2
+    M13;砂轮启动
+ELSE
+    M1=3 S1=15000
+ENDIF
+G4 F5
+M8;内磨削冷却开
+M38;外磨削冷却开
+G90 G01 Z=DRESSER[61] F=INI[56];Z轴右
+G90 G01 X=DRESSER[62]+1 F=INI[65]*4
+DRESSER[62]=DRESSER[62]-DRESSER[69]
+G90 G01 X=DRESSER[62] F=INI[65];X轴初始接触
+G4 F1
+
+CYCLE:
+MSG("夹具磨削中-->正在进行第"<<DRESSER[68]+1<<"次循环,进刀量:"<<DRESSER[69]<<"mm")
+FGROUP(Z)
+G91 G01 Z=-(DRESSER[61]-DRESSER[60]) C=(DRESSER[61]-DRESSER[60])/INI[68]*360 F300;
+DRESSER[62]=DRESSER[62]-DRESSER[69]
+G90 G01 X=DRESSER[62] F=INI[65];X轴初始接触
+G4 F1
+DRESSER[68]=DRESSER[68]+1
+MSG("夹具磨削中-->正在进行第"<<DRESSER[68]+1<<"次循环,进刀量:"<<DRESSER[69]<<"mm")
+FGROUP(Z)
+G91 G01 Z=(DRESSER[61]-DRESSER[60]) C=(DRESSER[61]-DRESSER[60])/INI[68]*360 F300;
+DRESSER[62]=DRESSER[62]-DRESSER[69]
+G90 G01 X=DRESSER[62] F=INI[65];X轴初始接触
+G4 F1
+DRESSER[68]=DRESSER[68]+1
+GOTOB CYCLE
+
+WAITP
+IF (INI[36]==0) OR (INI[36]==2);砂轮类型选择
+    M15
+ELSE
+    M1=5
+ENDIF
+M9
+M39
+G4 F1
+
+M30
+

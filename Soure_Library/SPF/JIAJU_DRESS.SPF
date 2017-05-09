@@ -1,0 +1,95 @@
+PROC JIAJU_DRESS DISPLON
+;;**********程序功能**********
+;;修整夹具的砂轮修整:
+;;使用前需手动测量初始参数,注意坐标的左右方向
+;;***************************
+
+DRESSER[63]=0;;砂轮在修整器左侧Z坐标
+DRESSER[64]=0;;砂轮在修整器右侧Z坐标
+DRESSER[65]=0;;砂轮接触修整器X坐标
+DRESSER[66]=0;;修整次数
+DRESSER[67]=0;;进刀量
+INI[67]=0;;自磨修整头架修整器C起始角度
+
+;;***************************
+
+DRFOF
+DRESSER[68]=0
+S_RESET_ANGLE;升角复位
+G90 G01 C=INI[67] F=INI[58]
+G90 G01 Z=INI[28] F=INI[56];内螺纹时台面起始位置
+G90 G01 X=DRESSER[65]-10 F=INI[55];修整轮相对砂轮1&2修整起点位置
+
+IF (INI[36]==0) OR (INI[36]==2);砂轮类型选择
+    R299=15000
+    G4 F0.2
+    M13;砂轮启动
+ELSE
+    M1=3 S1=15000
+ENDIF
+
+IF DRESSER[37]==0;内螺纹成型X前
+    IF (INI[37]==0) OR (INI[37]==2);修整轮类型选择
+        R297=3000
+        G4 F0.2
+        M63;修整轮启动
+    ELSE
+        IF (INI[36]==0) OR (INI[36]==2)
+            M1=3 S1=3000
+        ELSE
+            M2=3 S2=3000
+        ENDIF
+    ENDIF
+ENDIF
+
+G4 F5
+IF DRESSER[37]==0;内螺纹成型X前
+    M28;修整冷却开
+ENDIF
+
+G90 G01 Z=DRESSER[64] F=INI[56];Z轴右
+G90 G01 X=DRESSER[65]-1 F=INI[55]
+DRESSER[65]=DRESSER[65]+DRESSER[67]
+G90 G01 X=DRESSER[65] F=INI[65];X轴初始接触
+G4 F1
+
+CYCLE:
+MSG("砂轮修整中-->正在进行第"<<DRESSER[68]+1<<"次循环,剩余"<<DRESSER[66]-DRESSER[68]-1<<"次,进刀量:"<<DRESSER[67]<<"mm")
+G90 G01 Z=DRESSER[63] F300;Z轴左
+G4 F1
+DRESSER[68]=DRESSER[68]+1
+IF DRESSER[68]==DRESSER[66]
+    GOTOF DRESS_ABORT
+ENDIF
+G90 G01 X=DRESSER[65]-1 F=INI[65]*4
+G90 G01 Z=DRESSER[64] F=INI[56];Z轴右
+DRESSER[65]=DRESSER[65]+DRESSER[67]
+G90 G01 X=DRESSER[65] F=INI[65]
+G4 F1
+GOTOB CYCLE
+
+DRESS_ABORT:
+G90 G01 X=DRESSER[65]-10 F=INI[55];砂轮修整起点位置
+
+IF (INI[36]==0) OR (INI[36]==2);砂轮类型选择
+    M15
+ELSE
+    M1=5
+ENDIF
+IF (INI[37]==0) OR (INI[37]==2);修整轮类型选择
+    M65
+ELSE
+    IF (INI[36]==0) OR (INI[36]==2)
+        M1=5
+    ELSE
+        M2=5
+    ENDIF
+ENDIF
+
+M29
+G90 G01 Z=INI[28] F=INI[56];内螺纹时台面起始位置
+G90 G01 X=INI[23] F=INI[54]
+G4 F1
+
+M30
+
