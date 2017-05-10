@@ -20,7 +20,7 @@ WHILE(DRESSER[18]+DRESSER[19]<=DRESSER[11]+DRESSER[12])
     S_DRESS_SHAPE;齿形选择
     IF $A_DBB[2]==1;修整中途安全结束程序
         DRESSER[19]=DRESSER[19]+1;精修当前次数加一,匹配完整修整完成时的结果
-        GOTOF D_ENDING
+        RET
     ENDIF
     S_DRESS_CALC;次数累积
 ENDWHILE
