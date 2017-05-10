@@ -16,9 +16,6 @@ IF DRESSER[6]==2;砂轮过小
     DRESSER[19]=DRESSER[19]+1;精修当前次数加一,匹配完整修整完成时的结果
     GOTOF D_ENDING
 ENDIF
-IF GRIND[0]==2
-	GOTOF WARE_WORM;磨蜗杆修整程序自成结构
-ENDIF
 
 WARE;选择修整方式
 
