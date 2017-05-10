@@ -1,4 +1,4 @@
-PROC SCREW_N DISPLON
+PROC SCREW DISPLON
 ;;**********程序功能**********
 ;;内螺纹主程序:
 ;;修整 对刀 磨削 程序的调用

@@ -1,7 +1,7 @@
-PROC S_CYCLE_SW DISPLON
+PROC S_CYCLE_WORM DISPLON
 ;;**********程序功能**********
-;;外螺纹磨削循环:
-;;外螺纹磨削初始走位及子程序的调用，磨削中修整的调用
+;;蜗杆磨削循环:
+;;蜗杆磨削初始走位及子程序的调用，磨削中修整的调用
 ;;***************************
 
 IF TECH_TIME[0]+TECH_TIME[1]+TECH_TIME[2]+TECH_TIME[3]+TECH_TIME[4]==0
@@ -12,13 +12,8 @@ IF INI[75]==1;磨削几件后修整标记位
     INI[75]=0;标记位
     M9;磨削冷却关
     DRESS;修整
-    IF GRIND[0]==2
-        PROCESS[13]=PROCESS[13]-(R25-2)*R20-R21;初始进刀位置计算
-        PROCESS[4]=PROCESS[4]-(R25-2)*R20-R21;当前进刀位置计算
-    ELSE
-        PROCESS[13]=PROCESS[13]-DRESSER[18]*DRESSER[14]-(DRESSER[19]-1)*DRESSER[15];初始X轴位置累积
-        PROCESS[4]=PROCESS[4]-DRESSER[18]*DRESSER[14]-(DRESSER[19]-1)*DRESSER[15];当前X轴位置累积
-    ENDIF
+	PROCESS[13]=PROCESS[13]-(R25-2)*R20-R21;初始进刀位置计算
+    PROCESS[4]=PROCESS[4]-(R25-2)*R20-R21;当前进刀位置计算
     IF DRESSER[6]==2;砂轮过小
         RET
     ENDIF
@@ -43,7 +38,7 @@ ENDIF
 M20;吸雾开
 M8;磨削冷却开
 
-S_GRIND_SW;外螺纹小循环
+S_GRIND_WORM;外螺纹小循环
 PLCASUP1;初始角度计算
 
 IF INI[47]==0;磨削中不正常退出标记
@@ -57,13 +52,8 @@ ENDIF
 IF PROCESS[3]==1
     M9;磨削冷却关
     DRESS;修整
-    IF GRIND[0]==2
-        PROCESS[13]=PROCESS[13]-(R25-2)*R20-R21;初始进刀位置计算
-        PROCESS[4]=PROCESS[4]-(R25-2)*R20-R21;当前进刀位置计算
-    ELSE
-        PROCESS[13]=PROCESS[13]-DRESSER[18]*DRESSER[14]-(DRESSER[19]-1)*DRESSER[15];初始X轴位置累积
-        PROCESS[4]=PROCESS[4]-DRESSER[18]*DRESSER[14]-(DRESSER[19]-1)*DRESSER[15];当前X轴位置累积
-    ENDIF
+	PROCESS[13]=PROCESS[13]-(R25-2)*R20-R21;初始进刀位置计算
+	PROCESS[4]=PROCESS[4]-(R25-2)*R20-R21;当前进刀位置计算
     PROCESS[3]=0;修整标记清零
     IF DRESSER[6]==2;砂轮过小
         RET
