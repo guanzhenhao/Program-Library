@@ -1,4 +1,4 @@
-PROC S_CYCLE_WORM DISPLON
+PROC S_CYCLE DISPLON
 ;;**********程序功能**********
 ;;蜗杆磨削循环:
 ;;蜗杆磨削初始走位及子程序的调用，磨削中修整的调用
@@ -38,7 +38,7 @@ ENDIF
 M20;吸雾开
 M8;磨削冷却开
 
-S_GRIND_WORM;外螺纹小循环
+S_GRIND;蜗杆小循环
 PLCASUP1;初始角度计算
 
 IF INI[47]==0;磨削中不正常退出标记

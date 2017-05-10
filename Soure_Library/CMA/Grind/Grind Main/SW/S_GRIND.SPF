@@ -1,4 +1,4 @@
-PROC S_GRIND_WORM DISPLOF
+PROC S_GRIND DISPLOF
 ;;**********程序功能**********
 ;;外螺纹小循环:
 ;;完整磨削一个工件循环
